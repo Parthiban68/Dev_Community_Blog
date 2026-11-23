@@ -1,5 +1,29 @@
 @import "tailwindcss";
 
+:root {
+  --auth-bg: #FFFFFF;
+  --auth-surface: #F8FAFC;
+  --auth-text: #111827;
+  --auth-muted: #64748B;
+  --auth-border: #E2E8F0;
+  --auth-accent: #2563EB;
+  --auth-accent-strong: #1D4ED8;
+  --auth-danger: #DC2626;
+  --auth-success: #16A34A;
+}
+
+html.dark {
+  --auth-bg: #0B1120;
+  --auth-surface: #111827;
+  --auth-text: #F1F5F9;
+  --auth-muted: #94A3B8;
+  --auth-border: #263244;
+  --auth-accent: #60A5FA;
+  --auth-accent-strong: #93C5FD;
+  --auth-danger: #F87171;
+  --auth-success: #4ADE80;
+}
+
 @theme inline {
   --font-sans: "Helvetica Neue", Helvetica, Arial, "Inter", sans-serif;
   --color-background: #ffffff;
@@ -7,6 +31,15 @@
   --color-secondary: #333333;
   --color-muted: #666666;
   --color-line: #e5e5e5;
+  --color-auth-bg: var(--auth-bg);
+  --color-auth-surface: var(--auth-surface);
+  --color-auth-text: var(--auth-text);
+  --color-auth-muted: var(--auth-muted);
+  --color-auth-border: var(--auth-border);
+  --color-auth-accent: var(--auth-accent);
+  --color-auth-accent-strong: var(--auth-accent-strong);
+  --color-auth-danger: var(--auth-danger);
+  --color-auth-success: var(--auth-success);
 }
 
 @layer base {
@@ -124,6 +157,117 @@
   .reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  .auth-shell {
+    background-color: var(--auth-bg);
+    color: var(--auth-text);
+  }
+
+  .auth-shell :focus-visible {
+    outline-color: var(--auth-accent);
+  }
+
+  .auth-card {
+    @apply w-full border p-6 sm:p-8;
+    background-color: var(--auth-surface);
+    border-color: var(--auth-border);
+  }
+
+  .auth-label {
+    @apply mb-1.5 block text-[13px] font-medium;
+    color: var(--auth-text);
+  }
+
+  .auth-input {
+    @apply h-11 w-full border px-3 text-sm transition-colors;
+    background-color: var(--auth-bg);
+    border-color: var(--auth-border);
+    color: var(--auth-text);
+  }
+
+  .auth-input::placeholder {
+    color: var(--auth-muted);
+  }
+
+  .auth-input:focus {
+    border-color: var(--auth-accent);
+  }
+
+  .auth-input[aria-invalid="true"] {
+    border-color: var(--auth-danger);
+  }
+
+  .auth-muted {
+    color: var(--auth-muted);
+  }
+
+  .auth-error-text {
+    color: var(--auth-danger);
+  }
+
+  .auth-success-text {
+    color: var(--auth-success);
+  }
+
+  .auth-link {
+    @apply font-medium underline-offset-4 hover:underline;
+    color: var(--auth-accent);
+  }
+
+  .auth-link:hover {
+    color: var(--auth-accent-strong);
+  }
+
+  .auth-alert {
+    @apply border px-3 py-2.5 text-sm leading-6;
+  }
+
+  .auth-alert-error {
+    border-color: var(--auth-danger);
+    color: var(--auth-danger);
+    background-color: color-mix(in srgb, var(--auth-danger) 8%, transparent);
+  }
+
+  .auth-alert-success {
+    border-color: var(--auth-success);
+    color: var(--auth-success);
+    background-color: color-mix(in srgb, var(--auth-success) 8%, transparent);
+  }
+
+  .auth-alert-info {
+    border-color: var(--auth-border);
+    color: var(--auth-text);
+    background-color: var(--auth-bg);
+  }
+
+  .btn-auth-primary {
+    background-color: var(--auth-accent);
+    color: var(--auth-bg);
+  }
+
+  .btn-auth-primary:hover {
+    background-color: var(--auth-accent-strong);
+  }
+
+  .btn-auth-secondary {
+    border-color: var(--auth-border);
+    background-color: var(--auth-bg);
+    color: var(--auth-text);
+  }
+
+  .btn-auth-secondary:hover {
+    border-color: var(--auth-accent);
+    background-color: var(--auth-surface);
+    color: var(--auth-text);
+  }
+
+  .auth-theme-toggle {
+    color: var(--auth-muted);
+  }
+
+  .auth-theme-toggle:hover {
+    color: var(--auth-text);
   }
 }
 

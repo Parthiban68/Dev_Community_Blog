@@ -19,4 +19,21 @@ export default () => ({
     limit: Number(process.env.THROTTLE_LIMIT || 100),
   },
   swaggerEnabled: process.env.SWAGGER_ENABLED !== 'false',
+  auth: {
+    jwtAccessSecret: process.env.JWT_ACCESS_SECRET || '',
+    jwtAccessTtl: process.env.JWT_ACCESS_TTL || '15m',
+    refreshTokenTtlDays: Number(process.env.REFRESH_TOKEN_TTL_DAYS || 7),
+    cookieSameSite: process.env.COOKIE_SAME_SITE || 'lax',
+    cookieDomain: process.env.COOKIE_DOMAIN || '',
+    emailVerificationRequired: process.env.EMAIL_VERIFICATION_REQUIRED === 'true',
+    emailDeliveryEnabled: process.env.EMAIL_DELIVERY_ENABLED === 'true',
+    passwordResetTtlMinutes: Number(process.env.PASSWORD_RESET_TTL_MINUTES || 15),
+    frontendBaseUrl: process.env.FRONTEND_BASE_URL || 'http://localhost:5173',
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID || '',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
+      callbackUrl: process.env.GITHUB_CALLBACK_URL || '',
+      stateSecret: process.env.GITHUB_STATE_SECRET || '',
+    },
+  },
 });

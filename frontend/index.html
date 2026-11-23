@@ -9,6 +9,20 @@
       content="devcommons is a global community for developers, creators and technology enthusiasts to share knowledge and build meaningful projects."
     />
     <title>devcommons — Build connections. Create together.</title>
+    <script>
+      (function () {
+        try {
+          var mode = localStorage.getItem('devcommons-theme');
+          var prefersDark =
+            window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var dark = mode === 'dark' || ((mode === null || mode === 'system') && prefersDark);
+          document.documentElement.classList.toggle('dark', dark);
+          document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+        } catch (error) {
+          void error;
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

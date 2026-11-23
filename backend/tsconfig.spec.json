@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": ["jest", "node"],
+    "allowJs": true,
     "noEmit": true
   },
   "include": ["src/**/*.ts", "test/**/*.ts"]

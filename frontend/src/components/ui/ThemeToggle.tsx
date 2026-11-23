@@ -14,7 +14,11 @@ const modeIcon = {
   system: Monitor,
 };
 
-export function ThemeToggle() {
+interface ThemeToggleProps {
+  className?: string;
+}
+
+export function ThemeToggle({ className = '' }: ThemeToggleProps) {
   const { mode, toggle } = useTheme();
   const Icon = modeIcon[mode];
   const target = nextMode[mode];
@@ -22,7 +26,7 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      className="btn btn-quiet h-10 w-10 px-0"
+      className={`btn btn-quiet h-10 w-10 px-0 ${className}`}
       onClick={toggle}
       aria-label={`Theme mode: ${mode}. Switch to ${target}.`}
       title={`Theme: ${mode}`}

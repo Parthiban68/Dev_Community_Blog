@@ -7,7 +7,9 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
 import configuration from './config/configuration';
 import { validateEnvironment } from './config/env.validation';
 import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { PublicModule } from './modules/public/public.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { PublicModule } from './modules/public/public.module';
     }),
     DatabaseModule,
     PublicModule,
+    UsersModule,
+    AuthModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
