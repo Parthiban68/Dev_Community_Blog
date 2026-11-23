@@ -31,7 +31,7 @@ const columns = [
 export function LandingFooter() {
   return (
     <footer className="border-t border-line bg-background">
-      <div className="container-page grid gap-16 py-16 lg:grid-cols-[1.4fr_2fr] lg:py-24">
+      <div className="container-page grid gap-12 py-12 sm:gap-16 sm:py-16 lg:grid-cols-[1.4fr_2fr] lg:py-24">
         <Reveal>
           <div>
             <Link to="/" className="flex items-center gap-3" aria-label="devcommons home">
@@ -45,7 +45,7 @@ export function LandingFooter() {
           </div>
         </Reveal>
 
-        <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 min-[420px]:grid-cols-2 sm:grid-cols-3 sm:gap-10">
           {columns.map((column, index) => (
             <Reveal key={column.title} delay={index * 70}>
               <div>
@@ -80,7 +80,7 @@ export function LandingFooter() {
       </div>
 
       <div className="border-t border-line">
-        <div className="container-page flex flex-col gap-2 py-7 text-[11px] uppercase tracking-[0.08em] text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="container-page flex flex-col gap-2 py-7 text-[11px] uppercase tracking-[0.06em] text-muted sm:flex-row sm:items-center sm:justify-between sm:tracking-[0.08em]">
           <span>© {new Date().getFullYear()} devcommons. One global community.</span>
           <span>Independent · Developer-focused · Built for collaboration</span>
         </div>

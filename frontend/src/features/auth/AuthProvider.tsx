@@ -107,6 +107,28 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [refresh]);
 
   useEffect(() => {
+    let wasHidden = document.visibilityState === 'hidden';
+
+    const syncSession = () => {
+      if (document.visibilityState === 'hidden') {
+        wasHidden = true;
+        return;
+      }
+
+      if (wasHidden) {
+        wasHidden = false;
+        void refresh();
+      }
+    };
+
+    document.addEventListener('visibilitychange', syncSession);
+
+    return () => {
+      document.removeEventListener('visibilitychange', syncSession);
+    };
+  }, [refresh]);
+
+  useEffect(() => {
     let active = true;
 
     void (async () => {

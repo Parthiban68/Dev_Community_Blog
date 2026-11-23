@@ -1,6 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { AuthProvider } from '../auth/AuthProvider';
+import { refreshSession } from '../auth/auth.service';
 import type { FeaturedCollection, PlatformInfo } from '../../types/landing';
 import { LandingPage } from './LandingPage';
 
@@ -8,7 +10,13 @@ const { getMock } = vi.hoisted(() => ({ getMock: vi.fn() }));
 
 vi.mock('../../lib/api', () => ({
   apiClient: { get: getMock },
+  registerAuthRefreshHandler: vi.fn(),
 }));
+
+vi.mock('../auth/auth.service', async () => {
+  const { createAuthServiceMock } = await import('../../test/auth-service-mock');
+  return createAuthServiceMock();
+});
 
 const platform: PlatformInfo = {
   name: 'devcommons',
@@ -51,7 +59,9 @@ function renderLandingPage() {
   return render(
     <QueryClientProvider client={client}>
       <MemoryRouter>
-        <LandingPage />
+        <AuthProvider>
+          <LandingPage />
+        </AuthProvider>
       </MemoryRouter>
     </QueryClientProvider>,
   );
@@ -59,6 +69,7 @@ function renderLandingPage() {
 
 describe('LandingPage', () => {
   beforeEach(() => {
+    vi.mocked(refreshSession).mockRejectedValue(new Error('No active session'));
     getMock.mockReset();
     getMock.mockImplementation(async (path: string) => {
       if (path === '/public/platform') {

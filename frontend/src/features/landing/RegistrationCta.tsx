@@ -15,7 +15,7 @@ export function RegistrationCta({ cta }: RegistrationCtaProps) {
           <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-background/60">
             Join devcommons
           </p>
-          <h2 className="mt-8 max-w-6xl text-[clamp(3rem,8vw,7.5rem)] font-black uppercase leading-[0.9] tracking-[-0.07em]">
+          <h2 className="mt-8 max-w-6xl text-[clamp(2.4rem,8vw,7.5rem)] font-black uppercase leading-[0.9] tracking-[-0.07em] [overflow-wrap:anywhere]">
             {cta.title}
           </h2>
           <p className="mt-8 max-w-2xl text-base leading-8 text-background/70">{cta.description}</p>

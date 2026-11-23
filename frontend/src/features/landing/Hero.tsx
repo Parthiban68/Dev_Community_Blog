@@ -13,21 +13,25 @@ export function Hero({ platform }: HeroProps) {
     <section id="top" className="border-b border-line">
       <div className="container-page pb-24 pt-12 lg:pb-32 lg:pt-16">
         <Reveal>
-          <div className="flex items-baseline justify-between gap-6">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
             <p className="eyebrow">A global developer community</p>
             <p className="eyebrow hidden sm:block">devcommons / 01</p>
           </div>
         </Reveal>
 
-        <div className="mt-12 grid gap-14 lg:grid-cols-[minmax(0,1.7fr)_minmax(260px,0.65fr)] lg:gap-20">
-          <Reveal delay={80}>
+        <div className="mt-12 grid gap-14 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-12 xl:grid-cols-[minmax(0,1.7fr)_minmax(260px,0.65fr)] xl:gap-20">
+          <Reveal delay={80} className="min-w-0">
             <h1 aria-label={platform.tagline} className="hero-display">
-              <span className="block font-black uppercase">Build connections.</span>
-              <span className="mt-3 block font-light uppercase lg:ml-[11%]">Create together.</span>
+              <span className="block font-black uppercase [overflow-wrap:anywhere]">
+                Build connections.
+              </span>
+              <span className="mt-3 block font-light uppercase [overflow-wrap:anywhere] xl:ml-[11%]">
+                Create together.
+              </span>
             </h1>
           </Reveal>
 
-          <Reveal delay={140} className="self-end">
+          <Reveal delay={140} className="min-w-0 self-end">
             <p className="text-[15px] leading-7 text-secondary sm:text-base sm:leading-8">
               {platform.description}
             </p>

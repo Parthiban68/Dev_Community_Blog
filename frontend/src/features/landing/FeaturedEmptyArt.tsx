@@ -16,8 +16,8 @@ export function FeaturedEmptyArt({ section }: FeaturedEmptyArtProps) {
               key={category}
               className={
                 index % 2 === 0
-                  ? 'text-[clamp(1.8rem,4vw,3.4rem)] font-black uppercase leading-none tracking-[-0.06em]'
-                  : 'text-[clamp(1.8rem,4vw,3.4rem)] font-light uppercase leading-none tracking-[-0.06em]'
+                  ? 'text-[clamp(1.5rem,4vw,3.4rem)] font-black uppercase leading-none tracking-[-0.06em] [overflow-wrap:anywhere]'
+                  : 'text-[clamp(1.5rem,4vw,3.4rem)] font-light uppercase leading-none tracking-[-0.06em] [overflow-wrap:anywhere]'
               }
             >
               {category}

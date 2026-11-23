@@ -50,7 +50,10 @@ export function FeatureVisual({ id, large = false }: FeatureVisualProps) {
 
   if (id === 'communities') {
     return (
-      <div className={`grid grid-cols-2 gap-x-4 gap-y-1 ${large ? 'text-2xl' : 'text-lg'} font-bold tracking-[-0.04em]`} aria-hidden="true">
+      <div
+        className={`grid min-w-0 grid-cols-2 gap-x-3 gap-y-1 font-bold tracking-[-0.04em] [overflow-wrap:anywhere] sm:gap-x-4 ${large ? 'text-xl sm:text-2xl' : 'text-base sm:text-lg'}`}
+        aria-hidden="true"
+      >
         <span>REACT</span>
         <span>NODE.JS</span>
         <span>TYPESCRIPT</span>

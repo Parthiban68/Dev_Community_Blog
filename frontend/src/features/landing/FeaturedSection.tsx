@@ -26,6 +26,22 @@ interface RecordListProps {
   items: FeaturedItem[];
 }
 
+function projectSpanClass(index: number, total: number): string {
+  if (total === 1) {
+    return 'lg:col-span-12';
+  }
+
+  if (index === 0) {
+    return 'lg:col-span-7';
+  }
+
+  if (index === total - 1 && total % 2 === 1) {
+    return 'lg:col-span-12';
+  }
+
+  return 'lg:col-span-5';
+}
+
 function DetailsLink({ to }: { to: string }) {
   return (
     <Link to={to} className="editorial-link">
@@ -51,12 +67,12 @@ function RecordList({ section, items }: RecordListProps) {
       <div className="border-t border-line">
         {items.map((item, index) => (
           <Reveal key={item.id} delay={index * 70} className="border-b border-line">
-            <article className="grid gap-6 py-8 lg:grid-cols-[90px_minmax(0,1fr)_auto] lg:items-end lg:py-10">
-              <span className="text-[clamp(2.5rem,5vw,4rem)] font-light leading-none tracking-[-0.08em]">
+            <article className="grid gap-6 py-8 lg:grid-cols-[72px_minmax(0,1fr)_auto] lg:items-end lg:py-10 xl:grid-cols-[90px_minmax(0,1fr)_auto]">
+              <span className="text-[clamp(2.2rem,5vw,4rem)] font-light leading-none tracking-[-0.08em]">
                 {String(index + 1).padStart(2, '0')}
               </span>
-              <div>
-                <h3 className="text-[clamp(1.8rem,3.4vw,3.2rem)] font-black uppercase leading-[0.95] tracking-[-0.06em]">
+              <div className="min-w-0">
+                <h3 className="text-[clamp(1.6rem,3.4vw,3.2rem)] font-black uppercase leading-[0.95] tracking-[-0.06em] [overflow-wrap:anywhere]">
                   {item.title}
                 </h3>
                 <p className="mt-4 max-w-2xl text-sm leading-7 text-secondary">{item.description}</p>
@@ -77,16 +93,14 @@ function RecordList({ section, items }: RecordListProps) {
           <Reveal
             key={item.id}
             delay={index * 70}
-            className={`border-b border-r border-line ${
-              index === 0 ? 'lg:col-span-7' : 'lg:col-span-5'
-            }`}
+            className={`min-w-0 border-b border-r border-line ${projectSpanClass(index, items.length)}`}
           >
-            <article className="flex h-full flex-col p-6 lg:p-10">
+            <article className="flex h-full min-w-0 flex-col p-6 md:p-8 lg:p-10">
               <div className="flex items-baseline justify-between text-[10px] uppercase tracking-[0.2em] text-muted">
                 <span>Project</span>
                 <span>{String(index + 1).padStart(2, '0')}</span>
               </div>
-              <h3 className="mt-10 text-[clamp(1.8rem,3.2vw,3.2rem)] font-bold leading-[1] tracking-[-0.055em]">
+              <h3 className="mt-10 text-[clamp(1.6rem,3.2vw,3.2rem)] font-bold leading-[1] tracking-[-0.055em] [overflow-wrap:anywhere]">
                 {item.title}
               </h3>
               <p className="mt-4 max-w-xl text-sm leading-7 text-secondary">{item.description}</p>
@@ -105,12 +119,12 @@ function RecordList({ section, items }: RecordListProps) {
     <div className="border-t border-line">
       {items.map((item, index) => (
         <Reveal key={item.id} delay={index * 70} className="border-b border-line">
-          <article className="grid gap-6 py-8 lg:grid-cols-[110px_minmax(0,1fr)_auto] lg:items-end lg:py-10">
-            <span className="text-[clamp(3rem,6vw,5.5rem)] font-light leading-none tracking-[-0.08em]">
+          <article className="grid gap-6 py-8 lg:grid-cols-[90px_minmax(0,1fr)_auto] lg:items-end lg:py-10 xl:grid-cols-[110px_minmax(0,1fr)_auto]">
+            <span className="text-[clamp(2.4rem,6vw,5.5rem)] font-light leading-none tracking-[-0.08em]">
               {String(index + 1).padStart(2, '0')}
             </span>
-            <div>
-              <h3 className="text-[clamp(1.6rem,3vw,3rem)] font-bold leading-[1.02] tracking-[-0.05em]">
+            <div className="min-w-0">
+              <h3 className="text-[clamp(1.4rem,3vw,3rem)] font-bold leading-[1.02] tracking-[-0.05em] [overflow-wrap:anywhere]">
                 {item.title}
               </h3>
               <p className="mt-4 max-w-2xl text-sm leading-7 text-secondary">{item.description}</p>

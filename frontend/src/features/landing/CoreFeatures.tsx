@@ -28,14 +28,14 @@ export function CoreFeatures({ features }: CoreFeaturesProps) {
           />
         </Reveal>
 
-        <div className="mt-16 grid grid-cols-1 border-l border-t border-line sm:grid-cols-2 lg:grid-cols-12 lg:auto-rows-[minmax(230px,auto)]">
+        <div className="mt-16 grid grid-cols-1 border-l border-t border-line sm:grid-cols-2 md:auto-rows-[minmax(220px,auto)] lg:grid-cols-12 lg:auto-rows-[minmax(230px,auto)]">
           {features.map((feature, index) => (
             <Reveal
               key={feature.id}
               delay={(index % 3) * 80}
               className={`h-full border-b border-r border-line ${spanClasses[index % spanClasses.length]}`}
             >
-              <article className="flex h-full flex-col p-6 lg:p-10">
+              <article className="flex h-full min-w-0 flex-col p-6 md:p-8 lg:p-10">
                 <div className="flex items-baseline justify-between text-[10px] uppercase tracking-[0.2em] text-muted">
                   <span>Feature</span>
                   <span>{String(index + 1).padStart(2, '0')}</span>
