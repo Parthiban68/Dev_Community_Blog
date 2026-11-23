@@ -10,8 +10,7 @@ export function PasswordStrengthMeter({ password }: PasswordStrengthMeterProps) 
   }
 
   const { score, label } = getPasswordStrength(password);
-  const fillColor =
-    score <= 1 ? 'var(--auth-danger)' : score === 2 ? 'var(--auth-accent)' : 'var(--auth-success)';
+  const fillColor = 'var(--auth-text)';
 
   return (
     <div className="mt-2" aria-live="polite">

@@ -24,7 +24,7 @@ function renderLoginRoutes(initialEntries: Parameters<typeof renderWithAuth>[1] 
 }
 
 async function fillCredentials(user: ReturnType<typeof userEvent.setup>) {
-  await user.type(screen.getByLabelText('Email or username'), 'ada');
+  await user.type(screen.getByLabelText('Email address'), 'ada');
   await user.type(screen.getByLabelText('Password'), 'Abcdefgh1');
 }
 
@@ -35,6 +35,35 @@ describe('LoginPage', () => {
     vi.mocked(refreshSession).mockRejectedValue(new Error('No active session'));
     vi.mocked(getCurrentUser).mockRejectedValue(new Error('No active session'));
     vi.mocked(getGithubAuthStatus).mockResolvedValue({ configured: false });
+  });
+
+  it('renders the editorial login composition', () => {
+    renderWithAuth(<LoginPage />);
+
+    expect(screen.getByRole('heading', { name: 'Good to have you back.' })).toBeInTheDocument();
+    expect(screen.getByText('YOUR GLOBAL DEVELOPER COMMUNITY')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Welcome back.' })).toBeInTheDocument();
+    expect(screen.getByText('CONNECT.')).toBeInTheDocument();
+    expect(screen.getByText('LEARN.')).toBeInTheDocument();
+    expect(screen.getByText('BUILD.')).toBeInTheDocument();
+  });
+
+  it('shows a loading indicator while signing in', async () => {
+    const user = userEvent.setup();
+    let resolveLogin: ((value: ReturnType<typeof sessionRecords>) => void) | undefined;
+    vi.mocked(login).mockImplementation(
+      () =>
+        new Promise<ReturnType<typeof sessionRecords>>((resolve) => {
+          resolveLogin = resolve;
+        }),
+    );
+    renderWithAuth(<LoginPage />);
+
+    await fillCredentials(user);
+    await user.click(screen.getByRole('button', { name: 'Sign in' }));
+
+    expect(await screen.findByRole('button', { name: /Signing in/i })).toBeDisabled();
+    resolveLogin?.(sessionRecords());
   });
 
   it('shows field validation errors and does not call the API for an empty form', async () => {

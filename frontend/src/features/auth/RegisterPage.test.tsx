@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router-dom';
-import { renderWithAuth, sessionRecords } from '../../test/auth-utils';
+import { apiError, renderWithAuth, sessionRecords } from '../../test/auth-utils';
 import { AuthenticatedHomePage } from './AuthenticatedHomePage';
 import {
   checkEmail,
@@ -36,6 +36,48 @@ describe('RegisterPage', () => {
     vi.mocked(getGithubAuthStatus).mockResolvedValue({ configured: false });
     vi.mocked(checkUsername).mockResolvedValue(true);
     vi.mocked(checkEmail).mockResolvedValue(true);
+  });
+
+  it('renders the editorial registration composition', () => {
+    renderWithAuth(<RegisterPage />);
+
+    expect(
+      screen.getByRole('heading', { name: 'Your next chapter starts here.' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('ONE COMMUNITY. MANY POSSIBILITIES.')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Create your account.' })).toBeInTheDocument();
+    expect(screen.getByText('CONNECT.')).toBeInTheDocument();
+    expect(screen.getByText('CREATE.')).toBeInTheDocument();
+    expect(screen.getByText('COLLABORATE.')).toBeInTheDocument();
+  });
+
+  it('shows a loading indicator while creating the account', async () => {
+    const user = userEvent.setup();
+    let resolveRegister: ((value: ReturnType<typeof sessionRecords>) => void) | undefined;
+    vi.mocked(register).mockImplementation(
+      () =>
+        new Promise<ReturnType<typeof sessionRecords>>((resolve) => {
+          resolveRegister = resolve;
+        }),
+    );
+    renderWithAuth(<RegisterPage />);
+
+    await fillValidForm(user);
+    await user.click(screen.getByRole('button', { name: 'Create account' }));
+
+    expect(await screen.findByRole('button', { name: /Creating account/i })).toBeDisabled();
+    resolveRegister?.(sessionRecords());
+  });
+
+  it('shows the backend message when registration fails', async () => {
+    const user = userEvent.setup();
+    vi.mocked(register).mockRejectedValue(apiError(409, 'Username is already taken.'));
+    renderWithAuth(<RegisterPage />);
+
+    await fillValidForm(user);
+    await user.click(screen.getByRole('button', { name: 'Create account' }));
+
+    expect(await screen.findByText('Username is already taken.')).toBeInTheDocument();
   });
 
   it('rejects a password that is too short', async () => {

@@ -2,13 +2,14 @@ import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '../../components/ui/Button';
-import { AuthLayout } from './AuthLayout';
 import { useAuth } from './auth-context';
 import { getAuthErrorMessage } from './auth.errors';
 import { checkEmail, checkUsername } from './auth.service';
 import type { VerificationNotice } from './auth.types';
 import { AuthMessage } from './components/AuthMessage';
+import { AuthSubmitButton } from './components/AuthSubmitButton';
+import { AuthEditorialLayout } from './components/AuthEditorialLayout';
+import { AuthTextField } from './components/AuthTextField';
 import { GitHubButton } from './components/GitHubButton';
 import { PasswordField } from './components/PasswordField';
 import { PasswordStrengthMeter } from './components/PasswordStrengthMeter';
@@ -134,11 +135,26 @@ export function RegisterPage() {
   const usernameField = register('username');
   const emailField = register('email');
 
+  function availabilityHint(state: AvailabilityState) {
+    if (state.status === 'idle' || state.status === 'taken') {
+      return null;
+    }
+
+    return (
+      <p
+        role="status"
+        className={state.status === 'error' ? 'auth-field-error' : 'auth-success-text'}
+      >
+        {state.message}
+      </p>
+    );
+  }
+
   return (
-    <AuthLayout
-      wide
-      title="Join devcommons"
-      description="Create your account to connect with developers around the world."
+    <AuthEditorialLayout
+      variant="register"
+      title="Create your account."
+      description="Join a global community of people who build and share."
       footer={
         <p className="auth-muted">
           Already have an account?{' '}
@@ -149,147 +165,72 @@ export function RegisterPage() {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div className="space-y-4">
-          <div>
-            <label htmlFor="register-username" className="auth-label">
-              Username
-            </label>
-            <input
-              id="register-username"
-              type="text"
-              autoComplete="username"
-              className="auth-input"
-              aria-invalid={errors.username || usernameAvailability.status === 'taken' ? true : undefined}
-              aria-describedby={
-                errors.username
-                  ? 'register-username-error'
-                  : usernameAvailability.status === 'taken'
-                    ? 'register-username-availability'
-                    : undefined
-              }
-              {...usernameField}
-              onChange={(event) => {
-                void usernameField.onChange(event);
-                setUsernameAvailability(idleAvailability);
-              }}
-              onBlur={(event) => {
-                void usernameField.onBlur(event);
-                void runAvailabilityCheck('username');
-              }}
-            />
-            {errors.username ? (
-              <p
-                id="register-username-error"
-                role="alert"
-                className="auth-error-text mt-1.5 text-xs leading-5"
-              >
-                {errors.username.message}
-              </p>
-            ) : usernameAvailability.status === 'taken' ? (
-              <p
-                id="register-username-availability"
-                role="alert"
-                className="auth-error-text mt-1.5 text-xs leading-5"
-              >
-                {usernameAvailability.message}
-              </p>
-            ) : usernameAvailability.status !== 'idle' ? (
-              <p
-                role="status"
-                className={`mt-1.5 text-xs leading-5 ${usernameAvailability.status === 'available' ? 'auth-success-text' : 'auth-muted'}`}
-              >
-                {usernameAvailability.message}
-              </p>
-            ) : null}
-            {suggestion && !usernameValue ? (
-              <button
-                type="button"
-                className="auth-link mt-1.5 text-xs"
-                onClick={() => {
-                  setValue('username', suggestion, { shouldValidate: true });
-                  void runAvailabilityCheck('username');
-                }}
-              >
-                Use suggestion: {suggestion}
-              </button>
-            ) : null}
-          </div>
-          <div>
-            <label htmlFor="register-email" className="auth-label">
-              Email address
-            </label>
-            <input
-              id="register-email"
-              type="email"
-              autoComplete="email"
-              className="auth-input"
-              aria-invalid={errors.email || emailAvailability.status === 'taken' ? true : undefined}
-              aria-describedby={
-                errors.email
-                  ? 'register-email-error'
-                  : emailAvailability.status === 'taken'
-                    ? 'register-email-availability'
-                    : undefined
-              }
-              {...emailField}
-              onChange={(event) => {
-                void emailField.onChange(event);
-                setEmailAvailability(idleAvailability);
-              }}
-              onBlur={(event) => {
-                void emailField.onBlur(event);
-                void runAvailabilityCheck('email');
-              }}
-            />
-            {errors.email ? (
-              <p
-                id="register-email-error"
-                role="alert"
-                className="auth-error-text mt-1.5 text-xs leading-5"
-              >
-                {errors.email.message}
-              </p>
-            ) : emailAvailability.status === 'taken' ? (
-              <p
-                id="register-email-availability"
-                role="alert"
-                className="auth-error-text mt-1.5 text-xs leading-5"
-              >
-                {emailAvailability.message}
-              </p>
-            ) : emailAvailability.status !== 'idle' ? (
-              <p
-                role="status"
-                className={`mt-1.5 text-xs leading-5 ${emailAvailability.status === 'available' ? 'auth-success-text' : 'auth-muted'}`}
-              >
-                {emailAvailability.message}
-              </p>
-            ) : null}
-          </div>
-          <div>
-            <label htmlFor="register-display-name" className="auth-label">
-              Display name
-            </label>
-            <input
-              id="register-display-name"
-              type="text"
-              autoComplete="name"
-              className="auth-input"
-              aria-invalid={errors.displayName ? true : undefined}
-              aria-describedby={errors.displayName ? 'register-display-name-error' : undefined}
-              {...register('displayName')}
-            />
-            {errors.displayName ? (
-              <p
-                id="register-display-name-error"
-                role="alert"
-                className="auth-error-text mt-1.5 text-xs leading-5"
-              >
-                {errors.displayName.message}
-              </p>
-            ) : null}
-          </div>
-          <div>
+        <div className="space-y-5">
+          <AuthTextField
+            id="register-username"
+            label="Username"
+            type="text"
+            autoComplete="username"
+            error={
+              errors.username?.message ??
+              (usernameAvailability.status === 'taken' ? usernameAvailability.message : undefined)
+            }
+            hint={
+              <div className="space-y-1">
+                {availabilityHint(usernameAvailability)}
+                {suggestion && !usernameValue ? (
+                  <button
+                    type="button"
+                    className="auth-link text-xs"
+                    onClick={() => {
+                      setValue('username', suggestion, { shouldValidate: true });
+                      void runAvailabilityCheck('username');
+                    }}
+                  >
+                    Use suggestion: {suggestion}
+                  </button>
+                ) : null}
+              </div>
+            }
+            {...usernameField}
+            onChange={(event) => {
+              void usernameField.onChange(event);
+              setUsernameAvailability(idleAvailability);
+            }}
+            onBlur={(event) => {
+              void usernameField.onBlur(event);
+              void runAvailabilityCheck('username');
+            }}
+          />
+          <AuthTextField
+            id="register-email"
+            label="Email address"
+            type="email"
+            autoComplete="email"
+            error={
+              errors.email?.message ??
+              (emailAvailability.status === 'taken' ? emailAvailability.message : undefined)
+            }
+            hint={availabilityHint(emailAvailability)}
+            {...emailField}
+            onChange={(event) => {
+              void emailField.onChange(event);
+              setEmailAvailability(idleAvailability);
+            }}
+            onBlur={(event) => {
+              void emailField.onBlur(event);
+              void runAvailabilityCheck('email');
+            }}
+          />
+          <AuthTextField
+            id="register-display-name"
+            label="Display name"
+            type="text"
+            autoComplete="name"
+            error={errors.displayName?.message}
+            {...register('displayName')}
+          />
+          <div className="auth-field">
             <PasswordField
               label="Password"
               registration={register('password')}
@@ -309,20 +250,20 @@ export function RegisterPage() {
           />
         </div>
         {formError ? (
-          <div className="mt-4">
+          <div className="mt-5">
             <AuthMessage tone="error">{formError}</AuthMessage>
           </div>
         ) : null}
-        <Button type="submit" className="btn-auth-primary mt-5 w-full" disabled={isSubmitting}>
-          {isSubmitting ? 'Creating account…' : 'Create account'}
-        </Button>
+        <AuthSubmitButton loading={isSubmitting} loadingText="Creating account…">
+          Create account
+        </AuthSubmitButton>
       </form>
-      <div className="my-5 flex items-center gap-3" aria-hidden="true">
+      <div className="auth-divider" aria-hidden="true">
         <span className="h-px flex-1" style={{ backgroundColor: 'var(--auth-border)' }} />
-        <span className="auth-muted text-xs uppercase tracking-[0.14em]">or</span>
+        <span className="auth-muted text-[10px] uppercase tracking-[0.18em]">or</span>
         <span className="h-px flex-1" style={{ backgroundColor: 'var(--auth-border)' }} />
       </div>
       <GitHubButton />
-    </AuthLayout>
+    </AuthEditorialLayout>
   );
 }

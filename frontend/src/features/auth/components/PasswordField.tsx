@@ -24,7 +24,7 @@ export function PasswordField({
     [describedBy, error ? errorId : null].filter(Boolean).join(' ') || undefined;
 
   return (
-    <div>
+    <div className="auth-field">
       <label htmlFor={id} className="auth-label">
         {label}
       </label>
@@ -53,7 +53,7 @@ export function PasswordField({
         </button>
       </div>
       {error ? (
-        <p id={errorId} role="alert" className="auth-error-text mt-1.5 text-xs leading-5">
+        <p id={errorId} role="alert" className="auth-field-error">
           {error}
         </p>
       ) : null}
