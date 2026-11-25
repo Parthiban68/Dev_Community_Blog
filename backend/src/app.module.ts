@@ -8,6 +8,7 @@ import configuration from './config/configuration';
 import { validateEnvironment } from './config/env.validation';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CommunityModule } from './modules/community/community.module';
 import { PublicModule } from './modules/public/public.module';
 import { UsersModule } from './modules/users/users.module';
 
@@ -35,6 +36,7 @@ import { UsersModule } from './modules/users/users.module';
     PublicModule,
     UsersModule,
     AuthModule,
+    CommunityModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

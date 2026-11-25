@@ -40,6 +40,7 @@ async function bootstrap(): Promise<void> {
       .setTitle('devcommons API')
       .setDescription('Public API for the global developer community platform.')
       .setVersion('0.1.0')
+      .addBearerAuth()
       .build();
     SwaggerModule.setup('api/docs', app, SwaggerModule.createDocument(app, swaggerConfig));
   }
